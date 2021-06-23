@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { SkeletonLine, VideoCardSkeleton } from "../styles/Skeleton";
+import { SkeletonLine, ArticleCardSkeleton } from "../styles/Skeleton";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -19,7 +19,7 @@ const Wrapper = styled.div`
     border-radius: 60px;
   }
 
-  .videos {
+  .articles {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 2rem;
@@ -29,19 +29,19 @@ const Wrapper = styled.div`
   }
 
   @media screen and (max-width: 860px) {
-    .videos {
+    .articles {
       width: 90%;
     }
   }
 
   @media screen and (max-width: 830px) {
-    .videos {
+    .articles {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
   @media screen and (max-width: 540px) {
-    .videos {
+    .articles {
       grid-template-columns: 1fr;
     }
   }
@@ -99,10 +99,10 @@ const ChannelSkeleton = () => {
           <SkeletonLine width="200px" height="20px" mb="20px" />
         </div>
       </div>
-      <div className="videos">
-        <VideoCardSkeleton />
-        <VideoCardSkeleton />
-        <VideoCardSkeleton />
+      <div className="articles">
+        <ArticleCardSkeleton />
+        <ArticleCardSkeleton />
+        <ArticleCardSkeleton />
       </div>
     </Wrapper>
   );

@@ -7,14 +7,14 @@ const {
   searchUser,
   getProfile,
   recommendChannels,
-  getLikedVideos,
+  getLikedArticles,
   getHistory,
 } = require("../controllers/user");
 const { protect } = require("../middlewares/auth");
 
 router.route("/").put(protect, editUser);
 router.route("/").get(protect, recommendChannels);
-router.route("/likedVideos").get(protect, getLikedVideos);
+router.route("/likedArticles").get(protect, getLikedArticles);
 router.route("/history").get(protect, getHistory);
 router.route("/feed").get(protect, getFeed);
 router.route("/search").get(protect, searchUser);

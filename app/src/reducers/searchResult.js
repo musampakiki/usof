@@ -5,14 +5,14 @@ export const getSearchResults = createAsyncThunk(
   "searchResult",
   async (searchTerm) => {
     const { data: users } = await client(
-      `${process.env.REACT_APP_BE}users/search?searchterm=${searchTerm}`
+      `${process.env.REACT_APP_BE}/users/search?searchterm=${searchTerm}`
     );
 
-    const { data: videos } = await client(
-      `${process.env.REACT_APP_BE}videos/search?searchterm=${searchTerm}`
+    const { data: articles } = await client(
+      `${process.env.REACT_APP_BE}/articles/search?searchterm=${searchTerm}`
     );
 
-    return { users, videos };
+    return { users, articles };
   }
 );
 
@@ -21,7 +21,7 @@ const searchResultSlice = createSlice({
   initialState: {
     isFetching: true,
     users: [],
-    videos: [],
+    articles: [],
   },
   reducers: {
     toggleSubscribeSearchResults(state, action) {
@@ -33,14 +33,14 @@ const searchResultSlice = createSlice({
     },
     clearSearchResults(state, action) {
       state.users = [];
-      state.videos = [];
+      state.articles = [];
       state.isFetching = true;
     },
   },
   extraReducers: {
     [getSearchResults.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.videos = action.payload.videos;
+      state.articles = action.payload.articles;
       state.users = action.payload.users;
     },
   },

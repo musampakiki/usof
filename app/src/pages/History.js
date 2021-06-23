@@ -8,7 +8,7 @@ import { getHistory } from "../reducers/history";
 
 const History = ({ nopad }) => {
   const dispatch = useDispatch();
-  const { isFetching, videos } = useSelector((state) => state.history);
+  const { isFetching, articles } = useSelector((state) => state.history);
 
   useEffect(() => {
     dispatch(getHistory());
@@ -22,15 +22,15 @@ const History = ({ nopad }) => {
     <StyledTrending nopad={nopad}>
       <h2>History</h2>
 
-      {!isFetching && !videos.length && (
+      {!isFetching && !articles.length && (
         <p className="secondary">
-          Videos that you have watched will show up here
+          articles that you have watched will show up here
         </p>
       )}
 
-      {videos.map((video) => (
-        <Link key={video.id} to={`/watch/${video.id}`}>
-          <TrendingCard video={video} />
+      {articles.map((article) => (
+        <Link key={article.id} to={`/watch/${article.id}`}>
+          <TrendingCard article={article} />
         </Link>
       ))}
     </StyledTrending>

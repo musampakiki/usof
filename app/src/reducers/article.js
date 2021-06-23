@@ -1,21 +1,37 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { client } from "../utils";
+import { client } from "../utils/index";
 
-export const getVideo = createAsyncThunk("video/getVideo", async (videoId) => {
-  const { data: video } = await client(
-    `${process.env.REACT_APP_BE}videos/${videoId}`
+export const getArticle = createAsyncThunk(
+    "article/getArticle",
+    async (articleId) => {
+  const { data: article } = await client(
+    `${process.env.REACT_APP_BE}/articles/${articleId}`
 );
-return video;
+return article;
 });
 
-const videoSlice = createSlice({
+const articleSlice = createSlice({
   name: "slice",
   initialState: {
     isFetching: true,
     data: {},
   },
   reducers: {
-    clearVideo(state, action) {
+    addArticle(state, action) {
+      state.data = {
+        ...state.data,
+        /*articles: [action.payload, ...state.data.articles],*/
+        ...action.payload,
+      };
+    },
+    /*updateArticle(state, action) {
+      state.data = {
+        ...state.data,
+        ...action.payload,
+      };
+    },*/
+
+    clearArticle(state, action) {
       state.isFetching = true;
       state.data = {};
     },
@@ -53,13 +69,13 @@ const videoSlice = createSlice({
         dislikesCount: state.data.dislikesCount - 1,
       };
     },
-    subscribeFromVideo(state, action) {
+    subscribeFromArticle(state, action) {
       state.data = {
         ...state.data,
         isSubscribed: !state.data.isSubscribed,
       };
     },
-    unsubscribeFromVideo(state, action) {
+    unsubscribeFromArticle(state, action) {
       state.data = {
         ...state.data,
         isSubscribed: !state.data.isSubscribed,
@@ -67,7 +83,7 @@ const videoSlice = createSlice({
     },
   },
   extraReducers: {
-    [getVideo.fulfilled]: (state, action) => {
+    [getArticle.fulfilled]: (state, action) => {
       state.isFetching = false;
       state.data = action.payload;
     },
@@ -75,14 +91,16 @@ const videoSlice = createSlice({
 });
 
 export const {
-  clearVideo,
+  addArticle,
+  /*updateArticle,*/
+  clearArticle,
   addComment,
   like,
   dislike,
   cancelLike,
   cancelDislike,
-  subscribeFromVideo,
-  unsubscribeFromVideo,
-} = videoSlice.actions;
+  subscribeFromArticle,
+  unsubscribeFromArticle,
+} = articleSlice.actions;
 
-export default videoSlice.reducer;
+export default articleSlice.reducer;

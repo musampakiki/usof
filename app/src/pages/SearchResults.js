@@ -17,7 +17,7 @@ const SearchResults = () => {
   const { searchterm } = useParams();
 
   const dispatch = useDispatch();
-  const { isFetching, users, videos } = useSelector(
+  const { isFetching, users, articles } = useSelector(
     (state) => state.searchResult
   );
 
@@ -33,7 +33,7 @@ const SearchResults = () => {
     return <Skeleton title="true" />;
   }
 
-  if (!isFetching && !videos.length && !users.length) {
+  if (!isFetching && !articles.length && !users.length) {
     return <NoResults title="No results found" text="Try different keywords" />;
   }
 
@@ -49,9 +49,9 @@ const SearchResults = () => {
       </StyledChannels>
 
       {!isFetching &&
-        videos.map((video) => (
-          <Link key={video.id} to={`/watch/${video.id}`}>
-            <TrendingCard video={video} />
+        articles.map((article) => (
+          <Link key={article.id} to={`/watch/${article.id}`}>
+            <TrendingCard article={article} />
           </Link>
         ))}
     </StyledTrending>

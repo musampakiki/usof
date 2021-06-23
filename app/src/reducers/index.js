@@ -3,26 +3,26 @@ import { combineReducers } from "redux";
 // reducers
 import user from "./user";
 import feed from "./feed";
-import video from "./video";
+import article from "./article";
 import profile from "./profile";
 import sidebar from "./sidebar";
 import recommendation from "./recommendation";
 import channelRecommendation from "./channelRecommendation";
 import searchResult from "./searchResult";
 import trending from "./trending";
-import likedVideo from "./likedVideo";
+import likedArticle from "./likedArticle";
 import history from "./history";
 
 export default combineReducers({
   user,
   feed,
-  video,
+  article,
   profile,
   sidebar,
   recommendation,
   channelRecommendation,
   searchResult,
   trending,
-  likedVideo,
+  likedArticle,
   history,
 });

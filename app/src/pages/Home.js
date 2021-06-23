@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import VideoCard from "../components/VideoCard";
+import ArticleCard from "../components/ArticleCard";
 import Skeleton from "../skeletons/HomeSkeleton";
-import VideoGrid from "../styles/VideoGrid";
+import ArticleGrid from "../styles/ArticleGrid";
 import { getRecommendation } from "../reducers/recommendation";
 
 export const StyledHome = styled.div`
@@ -44,7 +44,7 @@ export const StyledHome = styled.div`
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { isFetching, videos } = useSelector((state) => state.recommendation);
+  const { isFetching, articles } = useSelector((state) => state.recommendation);
 
   useEffect(() => {
     dispatch(getRecommendation());
@@ -58,14 +58,14 @@ const Home = () => {
     <StyledHome>
       <h2>Recommended</h2>
 
-      <VideoGrid>
+      <ArticleGrid>
         {!isFetching &&
-          videos.map((video) => (
-            <Link key={video.id} to={`/watch/${video.id}`}>
-              <VideoCard video={video} />
+        articles.map((article) => (
+            <Link key={article.id} to={`/watch/${article.id}`}>
+              <ArticleCard article={article} />
             </Link>
           ))}
-      </VideoGrid>
+      </ArticleGrid>
     </StyledHome>
   );
 };

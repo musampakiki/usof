@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { SkeletonLine, VideoCardSkeleton } from "../styles/Skeleton";
+import { SkeletonLine, ArticleCardSkeleton } from "../styles/Skeleton";
 
 const Wrapper = styled.div`
 	display: grid;
@@ -20,27 +20,27 @@ const Wrapper = styled.div`
 		border-radius: 50px;
 	}
 
-	.video {
+	.article {
 		height: 340px;
 	}
 
-	.related-videos img {
+	.related-articles img {
 		height: 140px;
 	}
 
-	.related-videos div {
+	.related-articles div {
 		margin-bottom: 1rem;
 	}
 
 	@media screen and (max-width: 930px) {
 		grid-template-columns: 1fr;
-		.related-videos {
+		.related-articles {
 			display: none;
 		}
 	}
 
 	@media screen and (max-width: 500px) {
-		.video {
+		.article {
 			height: 250px;
 		}
 	}
@@ -64,8 +64,8 @@ const Wrapper = styled.div`
 const ChannelSkeleton = () => {
   return (
     <Wrapper>
-      <div className="video-container">
-        <SkeletonLine className="video" mb="30px" />
+      <div className="article-container">
+        <SkeletonLine className="article" mb="30px" />
         <SkeletonLine width="300px" height="25px" mb="20px" />
         <SkeletonLine width="200px" height="20px" mb="20px" />
         <div className="avatar-card">
@@ -76,11 +76,11 @@ const ChannelSkeleton = () => {
           </div>
         </div>
       </div>
-      <div className="related-videos">
+      <div className="related-articles">
         <SkeletonLine width="180px" height="20px" mb="20px" />
-        <VideoCardSkeleton />
-        <VideoCardSkeleton />
-        <VideoCardSkeleton />
+        <ArticleCardSkeleton />
+        <ArticleCardSkeleton />
+        <ArticleCardSkeleton />
       </div>
     </Wrapper>
   );

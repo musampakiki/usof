@@ -4,7 +4,7 @@ import { client } from "../utils";
 export const getTrending = createAsyncThunk(
   "trending/getTrending",
   async () => {
-    const { data } = await client(`${process.env.REACT_APP_BE}videos`);
+    const { data } = await client(`${process.env.REACT_APP_BE}/articles`);
     data.sort((a, b) => b.views - a.views);
     return data;
   }
@@ -14,12 +14,12 @@ const trendingSlice = createSlice({
   name: "trending",
   initialState: {
     isFetching: true,
-    videos: [],
+    articles: [],
   },
   extraReducers: {
     [getTrending.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.videos = action.payload;
+      state.articles = action.payload;
     },
   },
 });

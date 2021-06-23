@@ -56,18 +56,18 @@ const Wrapper = styled.div`
     top: -1px;
   }
 
-  .video-form {
+  .article-form {
     border-top: 1px solid ${(props) => props.theme.darkGrey};
     border-bottom: 1px solid ${(props) => props.theme.darkGrey};
     padding: 0.5rem 1rem;
   }
 
-  .video-form h2 {
+  .article-form h2 {
     margin: 1rem 0;
   }
 
-  .video-form input,
-  .video-form textarea {
+  .article-form input,
+  .article-form textarea {
     // width: 66.25%;
     width: 95%;
     background: ${(props) => props.theme.black};
@@ -78,11 +78,11 @@ const Wrapper = styled.div`
     border-radius: 3px;
   }
 
-  .video-form input {
+  .article-form input {
     height: 60px;
   }
 
-  .video-form textarea {
+  .article-form textarea {
     height: 120px;
   }
 
@@ -125,7 +125,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const UploadVideoModal = ({ previewVideo, closeModal, url, thumbnail }) => {
+const UploadArticleModal = ({ previewArticle, closeModal, url, thumbnail }) => {
   const dispatch = useDispatch();
   const { data: user } = useSelector((state) => state.user);
 
@@ -141,23 +141,23 @@ const UploadVideoModal = ({ previewVideo, closeModal, url, thumbnail }) => {
         return toast.error("Please fill in all the fields");
       }
 
-      const newVideo = {
+      const newArticle = {
         title: title.value,
         description: description.value,
         url,
         thumbnail,
       };
 
-      const { data: video } = await client(
-        `${process.env.REACT_APP_BE}/videos`,
-        { body: newVideo }
+      const { data: article } = await client(
+        `${process.env.REACT_APP_BE}/articles`,
+        { body: newArticle }
       );
 
       closeModal();
 
       dispatch(
         addToRecommendation({
-          ...video,
+          ...article,
           views: 0,
           User: {
             id: user.id,
@@ -175,7 +175,7 @@ const UploadVideoModal = ({ previewVideo, closeModal, url, thumbnail }) => {
         <div className="modal-header">
           <div className="modal-header-left">
             <CloseIcon onClick={() => closeModal()} />
-            <h3>Upload Video</h3>
+            <h3>Upload Article</h3>
           </div>
           <div style={{ display: url ? "block" : "none" }}>
             <Button onClick={handleTab}>
@@ -185,13 +185,13 @@ const UploadVideoModal = ({ previewVideo, closeModal, url, thumbnail }) => {
         </div>
 
         {tab === "PREVIEW" && (
-          <div className="tab video-preview">
-            <Player previewUrl={previewVideo} />
+          <div className="tab article-preview">
+            <Player previewUrl={previewArticle} />
           </div>
         )}
 
         {tab === "FORM" && (
-          <div className="tab video-form">
+          <div className="tab article-form">
             <h2>Details</h2>
             <input
               type="text"
@@ -200,7 +200,7 @@ const UploadVideoModal = ({ previewVideo, closeModal, url, thumbnail }) => {
               onChange={title.onChange}
             />
             <textarea
-              placeholder="Tell viewers about your video"
+              placeholder="Tell viewers about your Article"
               value={description.value}
               onChange={description.onChange}
             />
@@ -211,4 +211,4 @@ const UploadVideoModal = ({ previewVideo, closeModal, url, thumbnail }) => {
   );
 };
 
-export default UploadVideoModal;
+export default UploadArticleModal;

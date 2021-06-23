@@ -12,7 +12,7 @@ const Wrapper = styled.div`
     border-radius: 4px;
   }
 
-  .video-info-container {
+  .article-info-container {
     display: flex;
     margin-top: 0.3rem;
   }
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
     top: 5px;
   }
 
-  .video-info span {
+  .article-info span {
     font-size: 0.9rem;
     padding-right: 0.1rem;
   }
@@ -44,7 +44,7 @@ const PostCard = ({ nousername, hideavatar, article }) => {
     return (
         <Wrapper>
             <img className="thumb" src={article.thumbnail} alt="thumbnail" />
-            <div className="video-info-container">
+            <div className="article-info-container">
                 <div className="channel-avatar">
                     {!hideavatar && (
                         <Avatar
@@ -54,7 +54,7 @@ const PostCard = ({ nousername, hideavatar, article }) => {
                         />
                     )}
                 </div>
-                <div className="video-info">
+                <div className="article-info">
                     <h4>
                         {article.title.length > 40
                             ? article.title.substring(0, 40) + "..."

@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const UserModel = require("./models/User");
-const VideoModel = require("./models/Video");
-const VideoLikeModel = require("./models/VideoLike");
+const ArticleModel = require("./models/Article");
+const ArticleLikeModel = require("./models/ArticleLike");
 const CommentModel = require("./models/Comment");
 const SubscriptionModel = require("./models/Subscription");
 const ViewModel = require("./models/View");
@@ -14,18 +14,18 @@ const sequelize = new Sequelize("test1","postgres", "postgres", {
 (async () => await sequelize.sync({ alter: true }))();
 
 const User = UserModel(sequelize, DataTypes);
-const Video = VideoModel(sequelize, DataTypes);
-const VideoLike = VideoLikeModel(sequelize, DataTypes);
+const Article = ArticleModel(sequelize, DataTypes);
+const ArticleLike = ArticleLikeModel(sequelize, DataTypes);
 const Comment = CommentModel(sequelize, DataTypes);
 const Subscription = SubscriptionModel(sequelize, DataTypes);
 const View = ViewModel(sequelize, DataTypes);
 
-// video - user association
-Video.belongsTo(User, { foreignKey: "userId" });
+// Article - user association
+Article.belongsTo(User, { foreignKey: "userId" });
 
 // likes association
-User.belongsToMany(Video, { through: VideoLike, foreignKey: "userId" });
-Video.belongsToMany(User, { through: VideoLike, foreignKey: "videoId" });
+User.belongsToMany(Article, { through: ArticleLike, foreignKey: "userId" });
+Article.belongsToMany(User, { through: ArticleLike, foreignKey: "articleId" });
 
 // comments association
 User.hasMany(Comment, {
@@ -33,8 +33,8 @@ User.hasMany(Comment, {
 });
 Comment.belongsTo(User, { foreignKey: "userId" });
 
-Video.hasMany(Comment, {
-  foreignKey: "videoId",
+Article.hasMany(Comment, {
+  foreignKey: "articleId",
 });
 
 // subscription association
@@ -43,13 +43,13 @@ User.hasMany(Subscription, {
 });
 
 // views association
-User.belongsToMany(Video, { through: View, foreignKey: "userId" });
-Video.belongsToMany(User, { through: View, foreignKey: "videoId" });
+User.belongsToMany(Article, { through: View, foreignKey: "userId" });
+Article.belongsToMany(User, { through: View, foreignKey: "articleId" });
 
 module.exports = {
   User,
-  Video,
-  VideoLike,
+  Article,
+  ArticleLike,
   Comment,
   Subscription,
   View,

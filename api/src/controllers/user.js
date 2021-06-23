@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { VideoLike, Video, User, Subscription, View } = require("../sequelize");
+const { ArticleLike, Article, User, Subscription, View } = require("../sequelize");
 const asyncHandler = require("../middlewares/asyncHandler");
 
 exports.toggleSubscribe = asyncHandler(async (req, res, next) => {
@@ -52,7 +52,7 @@ exports.getFeed = asyncHandler(async (req, res, next) => {
 
   const subscriptions = subscribedTo.map((sub) => sub.subscribeTo);
 
-  const feed = await Video.findAll({
+  const feed = await Article.findAll({
     include: {
       model: User,
       attributes: ["id", "avatar", "username"],
@@ -69,9 +69,9 @@ exports.getFeed = asyncHandler(async (req, res, next) => {
     return res.status(200).json({ success: true, data: feed });
   }
 
-  feed.forEach(async (video, index) => {
-    const views = await View.count({ where: { videoId: video.id } });
-    video.setDataValue("views", views);
+  feed.forEach(async (article, index) => {
+    const views = await View.count({ where: { articleId: article.id } });
+    article.setDataValue("views", views);
 
     if (index === feed.length - 1) {
       return res.status(200).json({ success: true, data: feed });
@@ -122,7 +122,7 @@ exports.searchUser = asyncHandler(async (req, res, next) => {
       where: { subscribeTo: user.id },
     });
 
-    const videosCount = await Video.count({
+    const articlesCount = await Article.count({
       where: { userId: user.id },
     });
 
@@ -135,7 +135,7 @@ exports.searchUser = asyncHandler(async (req, res, next) => {
     const isMe = req.user.id === user.id;
 
     user.setDataValue("subscribersCount", subscribersCount);
-    user.setDataValue("videosCount", videosCount);
+    user.setDataValue("articlesCount", articlesCount);
     user.setDataValue("isSubscribed", !!isSubscribed);
     user.setDataValue("isMe", isMe);
 
@@ -204,27 +204,27 @@ exports.getProfile = asyncHandler(async (req, res, next) => {
 
   user.setDataValue("channels", channels);
 
-  const videos = await Video.findAll({
+  const articles = await Article.findAll({
     where: { userId: req.params.id },
     attributes: ["id", "thumbnail", "title", "createdAt"],
   });
 
-  if (!videos.length)
+  if (!articles.length)
     return res.status(200).json({ success: true, data: user });
 
-  videos.forEach(async (video, index) => {
-    const views = await View.count({ where: { videoId: video.id } });
-    video.setDataValue("views", views);
+  articles.forEach(async (article, index) => {
+    const views = await View.count({ where: { articleId: article.id } });
+    article.setDataValue("views", views);
 
-    if (index === videos.length - 1) {
-      user.setDataValue("videos", videos);
+    if (index === articles.length - 1) {
+      user.setDataValue("articles", articles);
       return res.status(200).json({ success: true, data: user });
     }
   });
 });
 
-exports.recommendedVideos = asyncHandler(async (req, res, next) => {
-  const videos = await Video.findAll({
+exports.recommendedArticles = asyncHandler(async (req, res, next) => {
+  const articles = await Article.findAll({
     attributes: [
       "id",
       "title",
@@ -237,15 +237,15 @@ exports.recommendedVideos = asyncHandler(async (req, res, next) => {
     order: [["createdAt", "DESC"]],
   });
 
-  if (!videos.length)
-    return res.status(200).json({ success: true, data: videos });
+  if (!articles.length)
+    return res.status(200).json({ success: true, data: articles });
 
-  videos.forEach(async (video, index) => {
-    const views = await View.count({ where: { videoId: video.id } });
-    video.setDataValue("views", views);
+  articles.forEach(async (article, index) => {
+    const views = await View.count({ where: { articleId: article.id } });
+    article.setDataValue("views", views);
 
-    if (index === videos.length - 1) {
-      return res.status(200).json({ success: true, data: videos });
+    if (index === articles.length - 1) {
+      return res.status(200).json({ success: true, data: articles });
     }
   });
 });
@@ -279,8 +279,8 @@ exports.recommendChannels = asyncHandler(async (req, res, next) => {
 
     channel.setDataValue("isSubscribed", !!isSubscribed);
 
-    const videosCount = await Video.count({ where: { userId: channel.id } });
-    channel.setDataValue("videosCount", videosCount);
+    const articlesCount = await Article.count({ where: { userId: channel.id } });
+    channel.setDataValue("articlesCount", articlesCount);
 
     if (index === channels.length - 1) {
       return res.status(200).json({ success: true, data: channels });
@@ -288,45 +288,45 @@ exports.recommendChannels = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.getLikedVideos = asyncHandler(async (req, res, next) => {
-  return getVideos(VideoLike, req, res, next);
+exports.getLikedArticles = asyncHandler(async (req, res, next) => {
+  return getArticles(ArticleLike, req, res, next);
 });
 
 exports.getHistory = asyncHandler(async (req, res, next) => {
-  return getVideos(View, req, res, next);
+  return getArticles(View, req, res, next);
 });
 
-const getVideos = async (model, req, res, next) => {
-  const videoRelations = await model.findAll({
+const getArticles = async (model, req, res, next) => {
+  const articleRelations = await model.findAll({
     where: { userId: req.user.id },
     order: [["createdAt", "ASC"]],
   });
 
-  const videoIds = videoRelations.map((videoRelation) => videoRelation.videoId);
+  const articleIds = articleRelations.map((articleRelation) => articleRelation.articleId);
 
-  const videos = await Video.findAll({
-    attributes: ["id", "title", "description", "createdAt", "thumbnail", "url"],
+  const articles = await Article.findAll({
+    attributes: ["id", "title", "description", "createdAt", "thumbnail", "text"],
     include: {
       model: User,
       attributes: ["id", "username", "avatar"],
     },
     where: {
       id: {
-        [Op.in]: videoIds,
+        [Op.in]: articleIds,
       },
     },
   });
 
-  if (!videos.length) {
-    return res.status(200).json({ success: true, data: videos });
+  if (!articles.length) {
+    return res.status(200).json({ success: true, data: articles });
   }
 
-  videos.forEach(async (video, index) => {
-    const views = await View.count({ where: { videoId: video.id } });
-    video.setDataValue("views", views);
+  articles.forEach(async (article, index) => {
+    const views = await View.count({ where: { articleId: article.id } });
+    article.setDataValue("views", views);
 
-    if (index === videos.length - 1) {
-      return res.status(200).json({ success: true, data: videos });
+    if (index === articles.length - 1) {
+      return res.status(200).json({ success: true, data: articles });
     }
   });
 };

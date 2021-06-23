@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const VideoGrid = styled.div`
+const ArticleGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
@@ -14,4 +14,4 @@ const VideoGrid = styled.div`
   }
 `;
 
-export default VideoGrid;
+export default ArticleGrid;

@@ -34,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
 		font-size: 1rem;
 	}
 
-	input:focus, textarea:focus, button:focus, video:focus {
+	input:focus, textarea:focus, button:focus, article:focus {
 			outline: none;
 	}
 

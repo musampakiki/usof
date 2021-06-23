@@ -141,23 +141,23 @@ const Sidebar = () => {
 
       <NavLink
         onClick={handleCloseSidebar}
-        to="/feed/my_videos"
+        to="/feed/my_articles"
         activeClassName="active"
       >
         <div className="icon">
           <VidIcon />
-          <span>Your videos</span>
+          <span>Your articles</span>
         </div>
       </NavLink>
 
       <NavLink
         onClick={handleCloseSidebar}
-        to="/feed/liked_videos"
+        to="/feed/liked_articles"
         activeClassName="active"
       >
         <div className="icon">
           <LikeIcon />
-          <span>Liked videos</span>
+          <span>Liked articles</span>
         </div>
       </NavLink>
         <NavLink

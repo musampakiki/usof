@@ -25,7 +25,7 @@ export const StyledTrending = styled.div`
 
 const Trending = () => {
   const dispatch = useDispatch();
-  const { isFetching, videos } = useSelector((state) => state.trending);
+  const { isFetching, articles } = useSelector((state) => state.trending);
 
   useEffect(() => {
     dispatch(getTrending());
@@ -41,9 +41,9 @@ const Trending = () => {
 
       <div className="trending">
         {!isFetching &&
-          videos.map((video) => (
-            <Link to={`/watch/${video.id}`} key={video.id}>
-              <TrendingCard video={video} />
+          articles.map((article) => (
+            <Link to={`/watch/${article.id}`} key={article.id}>
+              <TrendingCard article={article} />
             </Link>
           ))}
       </div>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Search from "./Search";
-import UploadVideo from "./UploadVideo";
+import UploadArticle from "./UploadArticle";
 import Avatar from "../styles/Avatar";
 import {HamburgerIcon, NotificationIcon, ExitIcon, SignoutIcon} from "./Icons";
 import { openSidebar, closeSidebar } from "../reducers/sidebar";
@@ -116,7 +116,7 @@ const Navbar = () => {
 
       <ul>
         <li>
-          <UploadVideo />
+          <UploadArticle />
         </li>
         <li>
           <NotificationIcon />

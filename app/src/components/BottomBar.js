@@ -73,7 +73,7 @@ const BottomBar = () => {
           <HistoryIcon />
         </NavLink>
 
-        <NavLink activeClassName="active" exact to="/feed/liked_videos">
+        <NavLink activeClassName="active" exact to="/feed/liked_articles">
           <WatchIcon />
         </NavLink>
       </div>

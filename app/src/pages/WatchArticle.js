@@ -4,25 +4,25 @@ import styled, { css } from "styled-components";
 import { Link, useParams } from "react-router-dom";
 
 // UI elements
-import Player from "../components/Player";
+/*import Player from "../components/Player";*/
 import Comments from "../components/Comments";
-import VideoCard from "../components/VideoCard";
+import ArticleCard from "../components/ArticleCard";
 import NoResults from "../components/NoResults";
 import { LikeIcon, DislikeIcon } from "../components/Icons";
-import Skeleton from "../skeletons/WatchVideoSkeleton";
+import Skeleton from "../skeletons/WatchArticleSkeleton";
 import Button from "../styles/Button";
 
 // reducers and others
 import {
-  subscribeFromVideo,
-  unsubscribeFromVideo,
-  clearVideo,
-  getVideo,
+  subscribeFromArticle,
+  unsubscribeFromArticle,
+  clearArticle,
+  getArticle,
   like,
   dislike,
   cancelLike,
   cancelDislike,
-} from "../reducers/video";
+} from "../reducers/article";
 import { addChannel, removeChannel } from "../reducers/user";
 import { getRecommendation } from "../reducers/recommendation";
 import {
@@ -30,7 +30,7 @@ import {
   removeChannelLocalSt,
   client,
   timeSince,
-} from "../utils";
+} from "../utils/index";
 
 const Wrapper = styled.div`
   display: grid;
@@ -39,12 +39,12 @@ const Wrapper = styled.div`
   padding: 1.3rem;
   padding-bottom: 7rem;
 
-  .video-container .video-info {
+  .article-container .article-info {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
 
-  .video-info span {
+  .article-info span {
     color: ${(props) => props.theme.secondaryColor};
   }
 
@@ -54,12 +54,12 @@ const Wrapper = styled.div`
     align-items: center;
   }
 
-  .video-info-stats {
+  .article-info-stats {
     display: flex;
     align-items: center;
   }
 
-  .video-info-stats div {
+  .article-info-stats div {
     margin-left: 6rem;
     position: relative;
     top: -2px;
@@ -80,11 +80,11 @@ const Wrapper = styled.div`
     padding: 1rem 0;
   }
 
-  .related-videos img {
+  .related-articles img {
     height: 140px;
   }
 
-  .related-videos div {
+  .related-articles div {
     margin-bottom: 1rem;
   }
 
@@ -110,7 +110,7 @@ const Wrapper = styled.div`
 
 	@media screen and (max-width: 930px) {
     grid-template-columns: 90%;
-    .related-videos {
+    .related-articles {
       display: none;
     }
   }
@@ -120,80 +120,80 @@ const Wrapper = styled.div`
   }
 
   @media screen and (max-width: 425px) {
-    .video-info-stats div {
+    .article-info-stats div {
       margin-left: 1rem;
     }
   }
 `;
 
-const WatchVideo = () => {
-  const { videoId } = useParams();
+const WatchArticle = () => {
+  const { articleId } = useParams();
 
   const dispatch = useDispatch();
 
-  const { isFetching: videoFetching, data: video } = useSelector(
-    (state) => state.video
+  const { isFetching: articleFetching, data: article } = useSelector(
+    (state) => state.article
   );
-  const { isFetching: recommendationFetching, videos: next } = useSelector(
+  const { isFetching: recommendationFetching, articles: next } = useSelector(
     (state) => state.recommendation
   );
 
   const handleLike = () => {
-    if (video.isLiked) {
+    if (article.isLiked) {
       dispatch(cancelLike());
     } else {
       dispatch(like());
     }
 
-    if (video.isDisliked) {
+    if (article.isDisliked) {
       dispatch(cancelDislike());
     }
 
-    client(`${process.env.REACT_APP_BE}/videos/${videoId}/like`);
+    client(`${process.env.REACT_APP_BE}articles/${articleId}/like`);
   };
 
   const handleDislike = () => {
-    if (video.isDisliked) {
+    if (article.isDisliked) {
       dispatch(cancelDislike());
     } else {
       dispatch(dislike());
     }
 
-    if (video.isLiked) {
+    if (article.isLiked) {
       dispatch(cancelLike());
     }
 
-    client(`${process.env.REACT_APP_BE}videos/${videoId}/dislike`);
+    client(`${process.env.REACT_APP_BE}articles/${articleId}/dislike`);
   };
 
   const handleSubscribe = (channel) => {
-    dispatch(subscribeFromVideo());
+    dispatch(subscribeFromArticle());
     dispatch(addChannel(channel));
     addChannelLocalSt(channel);
     client(`${process.env.REACT_APP_BE}users/${channel.id}/togglesubscribe`);
   };
 
   const handleUnsubscribe = (channelId) => {
-    dispatch(unsubscribeFromVideo());
+    dispatch(unsubscribeFromArticle());
     dispatch(removeChannel(channelId));
     removeChannelLocalSt(channelId);
     client(`${process.env.REACT_APP_BE}users/${channelId}/togglesubscribe`);
   };
 
   useEffect(() => {
-    dispatch(getVideo(videoId));
+    dispatch(getArticle(articleId));
     dispatch(getRecommendation());
 
     return () => {
-      dispatch(clearVideo());
+      dispatch(clearArticle());
     };
-  }, [dispatch, videoId]);
+  }, [dispatch, articleId]);
 
-  if (videoFetching || recommendationFetching) {
+  if (articleFetching || recommendationFetching) {
     return <Skeleton />;
   }
 
-  if (!videoFetching && !video) {
+  if (!articleFetching && !article) {
     return (
       <NoResults
         title="Page not found"
@@ -204,29 +204,25 @@ const WatchVideo = () => {
 
   return (
     <Wrapper
-      filledLike={video && video.isLiked}
-      filledDislike={video && video.isDisliked}
+      filledLike={article && article.isLiked}
+      filledDislike={article && article.isDisliked}
     >
-      <div className="video-container">
-        <div className="video">{!videoFetching && <Player />}</div>
-
-        <div className="video-info">
-          <h3>{video.title}</h3>
-
-          <div className="video-info-stats">
+      <div className="article-container">
+        <div className="article-info">
+          <div className="article-info-stats">
             <p>
-              <span>{video.views} views</span> <span>•</span>{" "}
-              <span>{timeSince(video.createdAt)} ago</span>
+              <span>{article.views} views</span> <span>•</span>{" "}
+              <span>{timeSince(article.createdAt)} ago</span>
             </p>
 
             <div className="likes-dislikes flex-row">
               <p className="flex-row like">
                 <LikeIcon onClick={handleLike} />{" "}
-                <span>{video.likesCount}</span>
+                <span>{article.likesCount}</span>
               </p>
               <p className="flex-row dislike" style={{ marginLeft: "1rem" }}>
                 <DislikeIcon onClick={handleDislike} />{" "}
-                <span>{video.dislikesCount}</span>
+                <span>{article.dislikesCount}</span>
               </p>
             </div>
           </div>
@@ -237,45 +233,51 @@ const WatchVideo = () => {
             <div className="channel-info flex-row">
               <img
                 className="avatar md"
-                src={video.User?.avatar}
+                src={article.User?.avatar}
                 alt="channel avatar"
               />
               <div className="channel-info-meta">
                 <h4>
-                  <Link to={`/channel/${video.userId}`}>
-                    {video.User?.username}
+                  <Link to={`/channel/${article.userId}`}>
+                    {article.User?.username}
                   </Link>
                 </h4>
                 <span className="secondary small">
-                  {video.subscribersCount} subscribers
+                  {article.subscribersCount} subscribers
                 </span>
               </div>
             </div>
-            {!video.isVideoMine && !video.isSubscribed && (
-              <Button onClick={() => handleSubscribe({ ...video.User })}>
+
+            {!article.isArticleMine && !article.isSubscribed && (
+              <Button onClick={() => handleSubscribe({ ...article.User })}>
                 Subscribe
               </Button>
             )}
-            {!video.isVideoMine && video.isSubscribed && (
-              <Button grey onClick={() => handleUnsubscribe(video.User.id)}>
+            {!article.isArticleMine && article.isSubscribed && (
+              <Button grey onClick={() => handleUnsubscribe(article.User.id)}>
                 Subscribed
               </Button>
             )}
           </div>
-
-          <p>{video.description}</p>
+          <img
+              className=""
+              src={article.thumbnail}
+              alt="article thumbnail"
+          />
+          <h1>{article.title}</h1>
+          <p>{article.text}</p>
         </div>
         <Comments />
       </div>
 
-      <div className="related-videos">
+      <div className="related-articles">
         <h3 style={{ marginBottom: "1rem" }}>Up Next</h3>
         {next
-          .filter((vid) => vid.id !== video.id)
+          .filter((vid) => vid.id !== article.id)
           .slice(0, 3)
-          .map((video) => (
-            <Link key={video.id} to={`/watch/${video.id}`}>
-              <VideoCard key={video.id} hideavatar={true} video={video} />
+          .map((article) => (
+            <Link key={article.id} to={`/watch/${article.id}`}>
+              <ArticleCard key={article.id} hideavatar={true} article={article} />
             </Link>
           ))}
       </div>
@@ -283,4 +285,4 @@ const WatchVideo = () => {
   );
 };
 
-export default WatchVideo;
+export default WatchArticle;

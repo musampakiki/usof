@@ -89,7 +89,7 @@ export const upload = async (resourceType, file) => {
   };
 
   const { data } = await axios.post(
-    `${process.env.REACT_APP_CLOUDINARY_ENDPOINT}${resourceType}/upload`,
+    `${process.env.REACT_APP_CLOUDINARY_ENDPOINT}/${resourceType}/upload`,
     formData,
     config
   );
@@ -103,12 +103,12 @@ export const authenticate = async (type, data) => {
   const backendUrl = process.env.REACT_APP_BE;
 
   try {
-    const { data: token } = await client(`${backendUrl}auth/${type}`, {
+    const { data: token } = await client(`${backendUrl}/auth/${type}`, {
       body: data,
     });
 
     if (token) {
-      const { data: user } = await client(`${backendUrl}auth/me`, { token });
+      const { data: user } = await client(`${backendUrl}/auth/me`, { token });
 
       localStorage.setItem("user", JSON.stringify({ ...user, token }));
 

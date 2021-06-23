@@ -1,4 +1,4 @@
-const { User, Video } = require("../sequelize");
+const { User, Article } = require("../sequelize");
 const asyncHandler = require("../middlewares/asyncHandler");
 
 exports.getUsers = asyncHandler(async (req, res, next) => {
@@ -17,18 +17,18 @@ exports.removeUser = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: {} });
 });
 
-exports.removeVideo = asyncHandler(async (req, res, next) => {
-  await Video.destroy({
+exports.removeArticle = asyncHandler(async (req, res, next) => {
+  await Article.destroy({
     where: { id: req.params.id },
   });
 
   res.status(200).json({ success: true, data: {} });
 });
 
-exports.getVideos = asyncHandler(async (req, res, next) => {
-  const videos = await Video.findAll({
-    attributes: ["id", "title", "description", "url", "thumbnail", "userId"],
+exports.getArticles = asyncHandler(async (req, res, next) => {
+  const articles = await Article.findAll({
+    attributes: ["id", "title", "description", "text", "thumbnail", "userId"],
   });
 
-  res.status(200).json({ success: true, data: videos });
+  res.status(200).json({ success: true, data: articles });
 });

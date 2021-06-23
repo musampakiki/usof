@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import TrendingCard from "../components/TrendingCard";
 import { StyledTrending } from "./Trending";
 import Skeleton from "../skeletons/TrendingSkeleton";
-import { getLikedVideos } from "../reducers/likedVideo";
+import { getLikedArticles } from "../reducers/likedArticle";
 
-const LikedVideos = () => {
+const LikedArticles = () => {
   const dispatch = useDispatch();
-  const { isFetching, videos } = useSelector((state) => state.likedVideo);
+  const { isFetching, articles } = useSelector((state) => state.likedArticle);
 
   useEffect(() => {
-    dispatch(getLikedVideos());
+    dispatch(getLikedArticles());
   }, [dispatch]);
 
   if (isFetching) {
@@ -20,21 +20,21 @@ const LikedVideos = () => {
 
   return (
     <StyledTrending>
-      <h2>Liked Videos</h2>
+      <h2>Liked Articles</h2>
 
-      {videos?.length === 0 && (
+      {articles?.length === 0 && (
         <p className="secondary">
-          Videos that you have liked will show up here
+          Articles that you have liked will show up here
         </p>
       )}
 
-      {videos.map((video) => (
-        <Link key={video.id} to={`/watch/${video.id}`}>
-          <TrendingCard video={video} />
+      {articles.map((article) => (
+        <Link key={article.id} to={`/watch/${article.id}`}>
+          <TrendingCard article={article} />
         </Link>
       ))}
     </StyledTrending>
   );
 };
 
-export default LikedVideos;
+export default LikedArticles;

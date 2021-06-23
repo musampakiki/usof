@@ -2,41 +2,41 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import VideoCard from "./VideoCard";
+import ArticleCard from "./ArticleCard";
 
 const Wrapper = styled.div`
-  .videos {
+  .articles {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 2rem;
   }
 
   @media screen and (max-width: 830px) {
-    .videos {
+    .articles {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
   @media screen and (max-width: 540px) {
-    .videos {
+    .articles {
       grid-template-columns: 1fr;
     }
   }
 `;
 
-const ChannelTabVideo = () => {
-  const { videos } = useSelector((state) => state.profile.data);
+const ChannelTabArticle = () => {
+  const { articles } = useSelector((state) => state.profile.data);
 
-  if (!videos?.length) {
-    return <p>This channel hasn't posted any videos yet</p>;
+  if (!articles?.length) {
+    return <p>This channel hasn't posted any articles yet</p>;
   }
 
   return (
     <Wrapper>
-      <div className="videos">
-        {videos?.map((video) => (
-          <Link to={`/watch/${video.id}`} key={video.id}>
-            <VideoCard nousername={true} hideavatar={true} video={video} />
+      <div className="articles">
+        {articles?.map((article) => (
+          <Link to={`/watch/${article.id}`} key={article.id}>
+            <ArticleCard nousername={true} hideavatar={true} article={article} />
           </Link>
         ))}
       </div>
@@ -44,4 +44,4 @@ const ChannelTabVideo = () => {
   );
 };
 
-export default ChannelTabVideo;
+export default ChannelTabArticle;

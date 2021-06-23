@@ -6,13 +6,13 @@ import { timeSince } from "../utils/index";
 const Wrapper = styled.div`
   .thumb {
     width: 100%;
-    height: 180px;
+    height: 380px;
     object-fit: cover;
     box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
   }
 
-  .video-info-container {
+  .Article-info-container {
     display: flex;
     margin-top: 0.3rem;
   }
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
     top: 5px;
   }
 
-  .video-info span {
+  .Article-info span {
     font-size: 0.9rem;
     padding-right: 0.1rem;
   }
@@ -40,32 +40,35 @@ const Wrapper = styled.div`
   }
 `;
 
-const VideoCard = ({ nousername, hideavatar, video }) => {
+const ArticleCard = ({ nousername, hideavatar, article }) => {
   return (
     <Wrapper>
-      <img className="thumb" src={video.thumbnail} alt="thumbnail" />
-      <div className="video-info-container">
+      <img className="thumb" src={article.thumbnail} alt="thumbnail" />
+      <div className="Article-info-container">
         <div className="channel-avatar">
           {!hideavatar && (
             <Avatar
               style={{ marginRight: "0.8rem" }}
-              src={video.User.avatar}
+              src={article.User.avatar}
               alt="channel avatar"
             />
           )}
         </div>
-        <div className="video-info">
+        <div className="Article-info">
           <h4>
-            {video.title.length > 40
-              ? video.title.substring(0, 40) + "..."
-              : video.title}
+            {article.title.length > 40
+              ? article.title.substring(0, 40) + "..."
+              : article.title}
           </h4>
+          <p className="secondary">
+            {article.description}
+          </p>
           {!nousername && (
-            <span className="secondary">{video.User.username}</span>
+            <span className="secondary">{article.User.username}</span>
           )}
           <p className="secondary">
-            <span>{video.views || 0} views</span> <span>•</span>{" "}
-            <span>{timeSince(video.createdAt)} ago</span>
+            <span>{article.views || 0} views</span> <span>•</span>{" "}
+            <span>{timeSince(article.createdAt)} ago</span>
           </p>
         </div>
       </div>
@@ -73,4 +76,4 @@ const VideoCard = ({ nousername, hideavatar, video }) => {
   );
 };
 
-export default VideoCard;
+export default ArticleCard;

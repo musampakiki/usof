@@ -33,7 +33,7 @@ export const SkeletonLine = styled(SkeletonPulse)`
   }
 `;
 
-export const VideoCardSkeleton = styled(SkeletonLine)`
+export const ArticleCardSkeleton = styled(SkeletonLine)`
   width: 100%;
   height: 180px;
 

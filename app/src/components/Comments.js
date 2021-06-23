@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import useInput from "../hooks/useInput";
-import { addComment } from "../reducers/video";
+import { addComment } from "../reducers/article";
 import { client, timeSince } from "../utils";
 
 const Wrapper = styled.div`
@@ -59,7 +59,7 @@ const Comments = () => {
 
   const dispatch = useDispatch();
   const { data: user } = useSelector((state) => state.user);
-  const { id: videoId, comments } = useSelector((state) => state.video.data);
+  const { id: articleId, comments } = useSelector((state) => state.article.data);
 
   const handleAddComment = async (e) => {
     if (e.keyCode === 13) {
@@ -70,7 +70,7 @@ const Comments = () => {
       }
 
       const { data } = await client(
-        `${process.env.REACT_APP_BE}videos/${videoId}/comment`,
+        `${process.env.REACT_APP_BE}/articles/${articleId}/comment`,
         {
           body: { text: comment.value },
         }

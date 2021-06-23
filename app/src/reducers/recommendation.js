@@ -4,7 +4,7 @@ import { client } from "../utils";
 export const getRecommendation = createAsyncThunk(
   "recommendation/getRecommendation",
   async () => {
-    const { data } = await client(`${process.env.REACT_APP_BE}videos`);
+    const { data } = await client(`${process.env.REACT_APP_BE}/articles`);
     return data;
   }
 );
@@ -13,17 +13,17 @@ const recommendationSlice = createSlice({
   name: "recommendation",
   initialState: {
     isFetching: true,
-    videos: [],
+    articles: [],
   },
   reducers: {
     addToRecommendation(state, action) {
-      state.videos = [action.payload, ...state.videos];
+      state.articles = [action.payload, ...state.articles];
     },
   },
   extraReducers: {
     [getRecommendation.fulfilled]: (state, action) => {
       state.isFetching = false;
-      state.videos = action.payload;
+      state.articles = action.payload;
     },
   },
 });

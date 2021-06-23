@@ -150,7 +150,7 @@ const EditProfileModal = ({ closeModal }) => {
     dispatch(updateProfile(updates));
 
     dispatch(updateUser(updates));
-    client(`${process.env.REACT_APP_BE}users`, {
+    client(`${process.env.REACT_APP_BE}/users`, {
       body: updates,
       method: "PUT",
     });

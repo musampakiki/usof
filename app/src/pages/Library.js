@@ -1,11 +1,11 @@
 import React from "react";
-import LikedVideos from "./LikedVideos";
+import LikedArticles from "./LikedArticles";
 import History from "./History";
 
 const Library = () => (
   <>
     <History nopad={true} />
-    <LikedVideos />
+    <LikedArticles />
   </>
 );
 

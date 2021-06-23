@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { User, Subscription, Video } = require("../sequelize");
+const { User, Subscription, Video, Article } = require("../sequelize");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("../middlewares/asyncHandler");

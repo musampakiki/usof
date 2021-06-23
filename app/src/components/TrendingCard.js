@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     border-radius: 4px;
   }
 
-  .video-info-container {
+  .article-info-container {
     margin-left: 1.2rem;
   }
 
@@ -33,7 +33,7 @@ const Wrapper = styled.div`
   @media screen and (max-width: 750px) {
     margin: 1.2rem 0;
 
-    .video-info-container {
+    .article-info-container {
       margin-left: 1.5rem;
     }
   }
@@ -41,7 +41,7 @@ const Wrapper = styled.div`
   @media screen and (max-width: 645px) {
     flex-direction: column;
 
-    .video-info-container {
+    .article-info-container {
       padding-bottom: 1rem;
     }
 
@@ -50,7 +50,7 @@ const Wrapper = styled.div`
       height: 300px;
     }
 
-    .video-info-container {
+    .article-info-container {
       margin-left: 0;
       margin-top: 1rem;
     }
@@ -71,19 +71,19 @@ const Wrapper = styled.div`
   }
 `;
 
-const TrendingCard = ({ video }) => {
+const TrendingCard = ({ article }) => {
   return (
     <Wrapper>
-      <img className="thumb" src={video.thumbnail} alt="thumbnail" />
-      <div className="video-info-container">
-        <h3>{video.title}</h3>
+      <img className="thumb" src={article.thumbnail} alt="thumbnail" />
+      <div className="article-info-container">
+        <h3>{article.title}</h3>
         <p className="secondary">
-          <span>{video.User.username}</span>
+          <span>{article.User.username}</span>
           <span>•</span>
-          <span>{video.views || 0} views</span>
-          <span>•</span> <span>{timeSince(video.createdAt)} ago</span>
+          <span>{article.views || 0} views</span>
+          <span>•</span> <span>{timeSince(article.createdAt)} ago</span>
         </p>
-        <p className="secondary">{video.description.substr(0, 130)}</p>
+        <p className="secondary">{article.description.substr(0, 130)}</p>
       </div>
     </Wrapper>
   );

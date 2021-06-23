@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 // components
 import EditProfile from "../components/EditProfile";
-import ChannelTabVideo from "../components/ChannelTabVideo";
+import ChannelTabArticle from "../components/ChannelTabArticle";
 import ChannelTabAbout from "../components/ChannelTabAbout";
 import ChannelTabChannels from "../components/ChannelTabChannels";
 import NoResults from "../components/NoResults";
@@ -113,7 +113,7 @@ const Channel = () => {
   const { id: loggedInUserId } = useSelector((state) => state.user.data);
   const { isFetching, data: profile } = useSelector((state) => state.profile);
 
-  const [tab, setTab] = useState("VIDEOS");
+  const [tab, setTab] = useState("ARTICLES");
 
   const profileId = userId || loggedInUserId;
 
@@ -121,14 +121,14 @@ const Channel = () => {
     dispatch(subscribeFromProfile());
     dispatch(addChannel(channel));
     addChannelLocalSt(channel);
-    client(`${process.env.REACT_APP_BE}users/${channel.id}/togglesubscribe`);
+    client(`${process.env.REACT_APP_BE}/users/${channel.id}/togglesubscribe`);
   };
 
   const handleUnsubscribe = (channelId) => {
     dispatch(unsubscribeFromProfile());
     dispatch(removeChannel(channelId));
     removeChannelLocalSt(channelId);
-    client(`${process.env.REACT_APP_BE}users/${channelId}/togglesubscribe`);
+    client(`${process.env.REACT_APP_BE}/users/${channelId}/togglesubscribe`);
   };
 
   useEffect(() => {
@@ -200,10 +200,10 @@ const Channel = () => {
         <div className="tabs">
           <ul className="secondary">
             <li
-              style={tab === "VIDEOS" ? activeTabStyle : {}}
-              onClick={() => setTab("VIDEOS")}
+              style={tab === "ARTICLES" ? activeTabStyle : {}}
+              onClick={() => setTab("ARTICLES")}
             >
-              Videos
+              Articles
             </li>
             <li
               style={tab === "CHANNELS" ? activeTabStyle : {}}
@@ -222,7 +222,7 @@ const Channel = () => {
       </div>
 
       <div className="tab">
-        {tab === "VIDEOS" && <ChannelTabVideo />}
+        {tab === "ARTICLES" && <ChannelTabArticle />}
         {tab === "ABOUT" && <ChannelTabAbout />}
         {tab === "CHANNELS" && <ChannelTabChannels />}
       </div>

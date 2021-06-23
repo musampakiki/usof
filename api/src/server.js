@@ -3,7 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const auth = require("./routes/auth");
 const admin = require("./routes/admin");
-const video = require("./routes/video");
+
+const article = require("./routes/article");
 const user = require("./routes/user");
 const errorHandler = require("./middlewares/errorHandler");
 
@@ -14,8 +15,9 @@ app.use(cors());
 
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/admin", admin);
-app.use("/api/v1/videos", video);
+
 app.use("/api/v1/users", user);
+app.use("/api/v1/articles", article);
 
 app.use(errorHandler);
 

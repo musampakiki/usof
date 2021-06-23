@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import path from "path";
 import { toast } from "react-toastify";
 import { UploadIcon } from "./Icons";
-import UploadVideoModal from "./UploadVideoModal";
+import UploadArticleModal from "./UploadArticleModal";
 import { upload } from "../utils";
 
-const UploadVideo = () => {
+const UploadArticle = () => {
   const [showModal, setShowModal] = useState(false);
-  const [previewVideo, setPreviewVideo] = useState("");
+  const [previewArticle, setPreviewArticle] = useState("");
   const closeModal = () => setShowModal(false);
 
   const [url, setUrl] = useState("");
   const [thumbnail, setThumbnail] = useState("");
 
-  const handleVideoUpload = async (e) => {
+  const handleArticleUpload = async (e) => {
     const file = e.target.files[0];
 
     if (file) {
@@ -24,10 +24,10 @@ const UploadVideo = () => {
       }
 
       const url = URL.createObjectURL(file);
-      setPreviewVideo(url);
+      setPreviewArticle(url);
       setShowModal(true);
 
-      const data = await upload("video", file);
+      const data = await upload("article", file);
       setUrl(data);
 
       const ext = path.extname(data);
@@ -37,20 +37,20 @@ const UploadVideo = () => {
 
   return (
     <div>
-      <label htmlFor="video-upload">
+      <label htmlFor="article-upload">
         <UploadIcon />
       </label>
       <input
         style={{ display: "none" }}
-        id="video-upload"
+        id="article-upload"
         type="file"
-        accept="video/*"
-        onChange={handleVideoUpload}
+        accept="article/*"
+        onChange={handleArticleUpload}
       />
       {showModal && (
-        <UploadVideoModal
+        <UploadArticleModal
           closeModal={closeModal}
-          previewVideo={previewVideo}
+          previewArticle={previewArticle}
           thumbnail={thumbnail}
           url={url}
         />
@@ -59,4 +59,4 @@ const UploadVideo = () => {
   );
 };
 
-export default UploadVideo;
+export default UploadArticle;

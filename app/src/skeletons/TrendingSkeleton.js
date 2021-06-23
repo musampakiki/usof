@@ -7,7 +7,7 @@ const SkeletonWrapper = styled.div`
   display: flex;
 
   @media screen and (max-width: 750px) {
-    .video-info-container {
+    .article-info-container {
       margin-left: 1.5rem;
     }
   }
@@ -15,7 +15,7 @@ const SkeletonWrapper = styled.div`
   @media screen and (max-width: 645px) {
     flex-direction: column;
 
-    .video-info-container {
+    .article-info-container {
       margin-left: 0;
       margin-top: 1rem;
     }
@@ -29,7 +29,7 @@ const TrendingSkeleton = () => {
 
       <SkeletonWrapper>
         <TrendingCardSkeleton className="thumb" mb="20px" mr="20px" />
-        <div className="video-info-container">
+        <div className="article-info-container">
           <SkeletonLine width="350px" height="30px" mb="20px" />
           <SkeletonLine width="300px" height="30px" mb="20px" />
         </div>
@@ -37,7 +37,7 @@ const TrendingSkeleton = () => {
 
       <SkeletonWrapper>
         <TrendingCardSkeleton className="thumb" mb="20px" mr="20px" />
-        <div className="video-info-container">
+        <div className="article-info-container">
           <SkeletonLine width="350px" height="30px" mb="20px" />
           <SkeletonLine width="300px" height="30px" mb="20px" />
         </div>
@@ -45,7 +45,7 @@ const TrendingSkeleton = () => {
 
       <SkeletonWrapper>
         <TrendingCardSkeleton className="thumb" mb="20px" mr="20px" />
-        <div className="video-info-container">
+        <div className="article-info-container">
           <SkeletonLine width="350px" height="30px" mb="20px" />
           <SkeletonLine width="300px" height="30px" mb="20px" />
         </div>
