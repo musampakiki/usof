@@ -33,6 +33,19 @@ export const SkeletonLine = styled(SkeletonPulse)`
   }
 `;
 
+export const CategoryCardSkeleton = styled(SkeletonLine)`
+  width: 100%;
+  height: 180px;
+
+  @media screen and (max-width: 600px) {
+    height: 250px;
+  }
+
+  @media screen and (max-width: 420px) {
+    height: 200px;
+  }
+`;
+
 export const ArticleCardSkeleton = styled(SkeletonLine)`
   width: 100%;
   height: 180px;

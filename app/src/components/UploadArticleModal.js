@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled, { keyframes } from "styled-components";
 import { toast } from "react-toastify";
-import Player from "./Player";
 import Button from "../styles/Button";
 import { CloseIcon } from "./Icons";
 import useInput from "../hooks/useInput";
 import { addToRecommendation } from "../reducers/recommendation";
+import { getCategories } from "../reducers/categories";
 import { client } from "../utils";
+import { Link } from "react-router-dom";
+
 
 const openModal = keyframes`
 	from {
@@ -125,27 +127,41 @@ const Wrapper = styled.div`
   }
 `;
 
-const UploadArticleModal = ({ previewArticle, closeModal, url, thumbnail }) => {
+const UploadArticleModal = ({ closeModal, url, thumbnail }) => {
   const dispatch = useDispatch();
   const { data: user } = useSelector((state) => state.user);
+  const { categories } = useSelector((state) => state.categories);
+
+
 
   const title = useInput("");
   const description = useInput("");
+  const text = useInput("");
+  const categoryId = useInput("");
   const [tab, setTab] = useState("PREVIEW");
 
+
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  console.log(categories)
+
+
   const handleTab = async () => {
-    if (tab === "PREVIEW") {
+    if (tab === "FORM") {
       setTab("FORM");
     } else {
-      if (!title.value.trim() || !description.value.trim()) {
+      if (!title.value.trim() || !description.value.trim() || !text.value.trim() || !categoryId.value.trim()) {
         return toast.error("Please fill in all the fields");
       }
 
       const newArticle = {
         title: title.value,
         description: description.value,
-        url,
-        thumbnail,
+        text: text.value,
+        categoryId: categoryId.value,
       };
 
       const { data: article } = await client(
@@ -153,7 +169,7 @@ const UploadArticleModal = ({ previewArticle, closeModal, url, thumbnail }) => {
         { body: newArticle }
       );
 
-      closeModal();
+
 
       dispatch(
         addToRecommendation({
@@ -174,38 +190,69 @@ const UploadArticleModal = ({ previewArticle, closeModal, url, thumbnail }) => {
       <div className="modal-content">
         <div className="modal-header">
           <div className="modal-header-left">
-            <CloseIcon onClick={() => closeModal()} />
-            <h3>Upload Article</h3>
+            <Link to="/">
+            <CloseIcon />
+            </Link>
           </div>
+
+          <h2>New Article</h2>
+
           <div style={{ display: url ? "block" : "none" }}>
             <Button onClick={handleTab}>
-              {tab === "PREVIEW" ? "Next" : "Upload"}
+              {tab === "FORM"}
             </Button>
           </div>
+
         </div>
 
-        {tab === "PREVIEW" && (
-          <div className="tab article-preview">
-            <Player previewUrl={previewArticle} />
-          </div>
-        )}
 
-        {tab === "FORM" && (
+
+
           <div className="tab article-form">
-            <h2>Details</h2>
+            <h3>Details</h3>
+
+            <label>Title
             <input
               type="text"
-              placeholder="Enter the title"
+              placeholder="Enter title"
               value={title.value}
               onChange={title.onChange}
             />
+          </label>
+
+            <label>Description
             <textarea
-              placeholder="Tell viewers about your Article"
+              placeholder="Enter description your Article"
               value={description.value}
               onChange={description.onChange}
             />
+            </label>
+              <label>Text
+              <textarea
+                  placeholder="Enter text your Article"
+                  value={text.value}
+                  onChange={text.onChange}
+              />
+
+            </label>
+
+            <label>Category
+              <input
+                    type="number"
+                    placeholder="Enter category"
+                    value={categoryId.value}
+                    onChange={categoryId.onChange}
+                />
+            </label>
+
+            <Link to="/">
+            <Button onClick={handleTab}>
+              {tab === "FORM" ? "Next" : "Save"}
+            </Button>
+            </Link>
           </div>
-        )}
+
+
       </div>
     </Wrapper>
   );

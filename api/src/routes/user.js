@@ -6,6 +6,7 @@ const {
   editUser,
   searchUser,
   getProfile,
+  getCategories,
   recommendChannels,
   getLikedArticles,
   getHistory,
@@ -20,5 +21,6 @@ router.route("/feed").get(protect, getFeed);
 router.route("/search").get(protect, searchUser);
 router.route("/:id").get(protect, getProfile);
 router.route("/:id/togglesubscribe").get(protect, toggleSubscribe);
+router.route("/categories").get(protect, getCategories);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { ArticleLike, Article, User, Subscription, View } = require("../sequelize");
+const { ArticleLike, Article, User, Subscription, View, Category } = require("../sequelize");
 const asyncHandler = require("../middlewares/asyncHandler");
 
 exports.toggleSubscribe = asyncHandler(async (req, res, next) => {
@@ -53,6 +53,10 @@ exports.getFeed = asyncHandler(async (req, res, next) => {
   const subscriptions = subscribedTo.map((sub) => sub.subscribeTo);
 
   const feed = await Article.findAll({
+    include: {
+      model: User,
+      attributes: ["id", "title", "thumbnail"],
+    },
     include: {
       model: User,
       attributes: ["id", "avatar", "username"],
@@ -231,9 +235,11 @@ exports.recommendedArticles = asyncHandler(async (req, res, next) => {
       "description",
       "thumbnail",
       "userId",
+      "categoryId",
       "createdAt",
     ],
-    include: [{ model: User, attributes: ["id", "avatar", "username"] }],
+  /*  include: [{ model: Category, attributes: ["id", "title", "thumbnail"] }],*/
+    include: [{ model: User, attributes: ["id", "avatar", "username"] },{ model: Category, attributes: ["id", "title", "thumbnail"] }],
     order: [["createdAt", "DESC"]],
   });
 
@@ -246,6 +252,31 @@ exports.recommendedArticles = asyncHandler(async (req, res, next) => {
 
     if (index === articles.length - 1) {
       return res.status(200).json({ success: true, data: articles });
+    }
+  });
+});
+
+exports.getCategories = asyncHandler(async (req, res, next) => {
+  const categories = await Category.findAll({
+    attributes: [
+      "id",
+      "title",
+      "thumbnail",
+      "userId",
+    ],
+    include: [{ model: User, attributes: ["id", "avatar", "username"] }],
+    order: [["createdAt", "DESC"]],
+  });
+
+  if (!categories.length)
+    return res.status(200).json({ success: true, data: categories });
+
+  categories.forEach(async (category, index) => {
+    const views = await View.count({ where: { categoryId: category.id } });
+    category.setDataValue("views", views);
+
+    if (index === categories.length - 1) {
+      return res.status(200).json({ success: true, data: categories });
     }
   });
 });
@@ -288,13 +319,53 @@ exports.recommendChannels = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.recommendCategories = asyncHandler(async (req, res, next) => {
+  const channels = await Category.findAll({
+    limit: 10,
+    attributes: ["id", "title", "thumbnail"],
+    where: {
+      id: {
+        [Op.not]: req.category.id,
+      },
+    },
+  });
+
+  if (!channels.length)
+    return res.status(200).json({ success: true, data: channels });
+
+  channels.forEach(async (channel, index) => {
+    const subscribersCount = await Subscription.count({
+      where: { subscribeTo: channel.id },
+    });
+    channel.setDataValue("subscribersCount", subscribersCount);
+
+    const isSubscribed = await Subscription.findOne({
+      where: {
+        subscriber: req.user.id,
+        subscribeTo: channel.id,
+      },
+    });
+
+    channel.setDataValue("isSubscribed", !!isSubscribed);
+
+    const articlesCount = await Article.count({ where: { userId: channel.id } });
+    channel.setDataValue("articlesCount", articlesCount);
+
+    if (index === channels.length - 1) {
+      return res.status(200).json({ success: true, data: channels });
+    }
+  });
+});
+
 exports.getLikedArticles = asyncHandler(async (req, res, next) => {
   return getArticles(ArticleLike, req, res, next);
 });
 
 exports.getHistory = asyncHandler(async (req, res, next) => {
-  return getArticles(View, req, res, next);
+  return (getArticles(View, req, res, next), getCategories(View, req, res, next))
 });
+
+
 
 const getArticles = async (model, req, res, next) => {
   const articleRelations = await model.findAll({
@@ -306,6 +377,10 @@ const getArticles = async (model, req, res, next) => {
 
   const articles = await Article.findAll({
     attributes: ["id", "title", "description", "createdAt", "thumbnail", "text"],
+    include: {
+      model: Category,
+      attributes: ["id", "title", "thumbnail"],
+    },
     include: {
       model: User,
       attributes: ["id", "username", "avatar"],
@@ -330,3 +405,51 @@ const getArticles = async (model, req, res, next) => {
     }
   });
 };
+
+const getCategories = async (model, req, res, next) => {
+  const categoryRelations = await model.findAll({
+    where: { userId: req.user.id },
+    order: [["createdAt", "ASC"]],
+  });
+
+  const categoryIds = categoryRelations.map((categoryRelation) => categoryRelation.categoryId);
+
+  const categories = await Category.findAll({
+    attributes: ["id", "title", "thumbnail"],
+    include: {
+      model: User,
+      attributes: ["id", "username", "avatar"],
+    },
+    where: {
+      id: {
+        [Op.in]: categoryIds,
+      },
+    },
+  });
+
+  if (!categories.length) {
+    return res.status(200).json({ success: true, data: categories });
+  }
+
+  categories.forEach(async (category, index) => {
+    const views = await View.count({ where: { categoryId: category.id } });
+    category.setDataValue("views", views);
+
+    if (index === categories.length - 1) {
+      return res.status(200).json({ success: true, data: categories });
+    }
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+

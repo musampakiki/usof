@@ -11,13 +11,16 @@ const historySlice = createSlice({
   initialState: {
     isFetching: true,
     articles: [],
+    categories: [],
   },
   extraReducers: {
     [getHistory.fulfilled]: (state, action) => {
       state.isFetching = false;
       state.articles = action.payload;
+      state.categories = action.payload;
     },
   },
 });
 
 export default historySlice.reducer;
+

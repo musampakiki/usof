@@ -24,12 +24,7 @@ const articleSlice = createSlice({
         ...action.payload,
       };
     },
-    /*updateArticle(state, action) {
-      state.data = {
-        ...state.data,
-        ...action.payload,
-      };
-    },*/
+
 
     clearArticle(state, action) {
       state.isFetching = true;
@@ -92,7 +87,6 @@ const articleSlice = createSlice({
 
 export const {
   addArticle,
-  /*updateArticle,*/
   clearArticle,
   addComment,
   like,

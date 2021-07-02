@@ -22,6 +22,7 @@ import Subscriptions from "./pages/Subscriptions";
 import Channel from "./pages/Channel";
 
 import WatchArticle from "./pages/WatchArticle";
+import WatchCategory from "./pages/WatchCategory";
 import SearchResults from "./pages/SearchResults";
 import Library from "./pages/Library";
 import History from "./pages/History";
@@ -29,6 +30,9 @@ import History from "./pages/History";
 import YourArticles from "./pages/YourArticles";
 import LikedArticles from "./pages/LikedArticles";
 import EditProfile from "./components/EditProfile";
+import Categories from "./pages/Categories";
+import UploadArticleModal from "./components/UploadArticleModal";
+import UploadCategoryModal from "./components/UploadCategoryModal";
 
 const AppRouter = () => (
   <Router>
@@ -40,6 +44,7 @@ const AppRouter = () => (
       <Switch>
 
         <Route path="/watch/:articleId" component={WatchArticle} />
+        <Route path="/categories/:categoryId" component={WatchCategory} />
         <Route path="/channel/:userId" component={Channel} />
         <Route path="/results/:searchterm" component={SearchResults} />
         <Route path="/feed/trending" component={Trending} />
@@ -48,7 +53,9 @@ const AppRouter = () => (
         <Route path="/feed/history" component={History} />
 
         <Route path="/feed/my_articles" component={YourArticles} />
-
+        <Route path="/categories" component={Categories} />
+        <Route path="/new_articles" component={UploadArticleModal} />
+        <Route path="/new_category" component={UploadCategoryModal} />
         <Route path="/feed/liked_articles" component={LikedArticles} />
         <Route path="/profile" component={EditProfile} />
         <Route path="/" component={Home} />

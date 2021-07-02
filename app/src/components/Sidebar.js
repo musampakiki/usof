@@ -92,7 +92,16 @@ const Sidebar = () => {
           <span>Home</span>
         </div>
       </NavLink>
-
+      <NavLink
+            onClick={handleCloseSidebar}
+            to="/categories"
+            activeClassName="active"
+        >
+            <div className="icon">
+                <PostIcon />
+                <span>Categories</span>
+            </div>
+      </NavLink>
       <NavLink
         onClick={handleCloseSidebar}
         to="/feed/trending"
@@ -160,26 +169,7 @@ const Sidebar = () => {
           <span>Liked articles</span>
         </div>
       </NavLink>
-        <NavLink
-            onClick={handleCloseSidebar}
-            to="/feed/my_posts"
-            activeClassName="active"
-        >
-            <div className="icon">
-                <PostIcon />
-                <span>Your posts</span>
-            </div>
-        </NavLink>
-        <NavLink
-            onClick={handleCloseSidebar}
-            to="/feed/liked_articles"
-            activeClassName="active"
-        >
-            <div className="icon">
-                <LikeIcon />
-                <span>Liked posts</span>
-            </div>
-        </NavLink>
+       
 
       <div className="ruler"></div>
 

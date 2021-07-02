@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("Article", {
+    return sequelize.define("Category", {
         id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -12,17 +12,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        description: {
-            type: DataTypes.STRING,
-        },
-        text: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
         thumbnail: {
             type: DataTypes.STRING,
             defaultValue:
-                "https://packagecontrol.io/readmes/img/e9492f0f82721e4998b1360e409e6fe8affc30bb.png",
+                "https://johanbostrom.se/blog/the-best-image-placeholder-services-on-the-web/placeholder_image_hu7f2c31cb17c6b91aa8599714a1cd3d05_165876_1010x510_fit_box_2.png",
         },
     });
-};
+}

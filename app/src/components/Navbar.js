@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Search from "./Search";
-import UploadArticle from "./UploadArticle";
 import Avatar from "../styles/Avatar";
-import {HamburgerIcon, NotificationIcon, ExitIcon, SignoutIcon} from "./Icons";
+import {HamburgerIcon, NotificationIcon, ExitIcon, SignoutIcon, NewArticleIcon, PostIcon} from "./Icons";
 import { openSidebar, closeSidebar } from "../reducers/sidebar";
 import {logout} from "../reducers/user";
 
@@ -116,8 +115,18 @@ const Navbar = () => {
 
       <ul>
         <li>
-          <UploadArticle />
+          <Link to="/new_category">
+            <PostIcon />
+
+          </Link>
         </li>
+        <li>
+          <Link to="/new_articles">
+            <NewArticleIcon />
+
+          </Link>
+        </li>
+
         <li>
           <NotificationIcon />
         </li>

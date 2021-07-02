@@ -11,11 +11,13 @@ const feedSlice = createSlice({
   initialState: {
     isFetching: true,
     articles: [],
+    categories:[],
   },
   extraReducers: {
     [getFeed.fulfilled]: (state, action) => {
       state.isFetching = false;
       state.articles = action.payload;
+      state.categories = action.payload
     },
   },
 });

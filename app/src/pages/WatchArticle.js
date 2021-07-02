@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import { Link, useParams } from "react-router-dom";
 
-// UI elements
-/*import Player from "../components/Player";*/
+
 import Comments from "../components/Comments";
 import ArticleCard from "../components/ArticleCard";
 import NoResults from "../components/NoResults";
@@ -12,7 +11,7 @@ import { LikeIcon, DislikeIcon } from "../components/Icons";
 import Skeleton from "../skeletons/WatchArticleSkeleton";
 import Button from "../styles/Button";
 
-// reducers and others
+
 import {
   subscribeFromArticle,
   unsubscribeFromArticle,
@@ -31,6 +30,10 @@ import {
   client,
   timeSince,
 } from "../utils/index";
+
+
+
+
 
 const Wrapper = styled.div`
   display: grid;
@@ -125,6 +128,9 @@ const Wrapper = styled.div`
     }
   }
 `;
+
+
+
 
 const WatchArticle = () => {
   const { articleId } = useParams();
@@ -236,6 +242,11 @@ const WatchArticle = () => {
                 src={article.User?.avatar}
                 alt="channel avatar"
               />
+            {/*  <img
+                  className="avatar md"
+                  src={article.Category?.thumbnail}
+                  alt="category thumbnail"
+              />*/}
               <div className="channel-info-meta">
                 <h4>
                   <Link to={`/channel/${article.userId}`}>
@@ -264,9 +275,37 @@ const WatchArticle = () => {
               src={article.thumbnail}
               alt="article thumbnail"
           />
+          <p>category: {article.Category?.title}</p>
           <h1>{article.title}</h1>
           <p>{article.text}</p>
+
         </div>
+
+
+        {/* <div className="channel-info flex-row">
+           <img
+               className="avatar md"
+               src={article.Category?.thumbnail}
+               alt="channel avatar"
+           />
+
+           <div className="channel-info-meta">
+             <h4>
+               <Link to={`/channel/${article.categoryId}`}>
+                 {article.Category?.title}
+               </Link>
+             </h4>
+
+           </div>
+         </div>*/}
+
+
+
+
+
+
+
+
         <Comments />
       </div>
 

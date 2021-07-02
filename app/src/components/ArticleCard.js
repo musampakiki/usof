@@ -40,7 +40,10 @@ const Wrapper = styled.div`
   }
 `;
 
-const ArticleCard = ({ nousername, hideavatar, article }) => {
+const ArticleCard = ({ nousername, hideavatar, article, category }) => {
+
+
+
   return (
     <Wrapper>
       <img className="thumb" src={article.thumbnail} alt="thumbnail" />
@@ -64,8 +67,15 @@ const ArticleCard = ({ nousername, hideavatar, article }) => {
             {article.description}
           </p>
           {!nousername && (
-            <span className="secondary">{article.User.username}</span>
+            <span className="secondary">author: {article.User.username}</span>
           )}
+
+          <p className="secondary">
+            <span>category: {article.Category?.title} </span>
+
+          </p>
+
+
           <p className="secondary">
             <span>{article.views || 0} views</span> <span>•</span>{" "}
             <span>{timeSince(article.createdAt)} ago</span>

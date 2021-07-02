@@ -75,9 +75,4 @@ export const {
 } = userSlice.actions;
 
 
-/*export const logout = useCallback(() => {
-  setToken(null)
-  setUserId(null)
-  localStorage.removeItem(storageName)
-}, [])*/
 export default userSlice.reducer;

@@ -1,4 +1,4 @@
-const { User, Article } = require("../sequelize");
+const { User, Article, Category } = require("../sequelize");
 const asyncHandler = require("../middlewares/asyncHandler");
 
 exports.getUsers = asyncHandler(async (req, res, next) => {
@@ -27,8 +27,24 @@ exports.removeArticle = asyncHandler(async (req, res, next) => {
 
 exports.getArticles = asyncHandler(async (req, res, next) => {
   const articles = await Article.findAll({
-    attributes: ["id", "title", "description", "text", "thumbnail", "userId"],
+    attributes: ["id", "title", "description", "text", "thumbnail", "userId", "categoryId"],
   });
 
   res.status(200).json({ success: true, data: articles });
+});
+
+exports.getCategories = asyncHandler(async (req, res, next) => {
+  const categories = await Category.findAll({
+    attributes: ["id", "title", "thumbnail", "userId"],
+  });
+
+  res.status(200).json({ success: true, data: categories });
+});
+
+exports.removeCategory = asyncHandler(async (req, res, next) => {
+  await Category.destroy({
+    where: { id: req.params.id },
+  });
+
+  res.status(200).json({ success: true, data: {} });
 });

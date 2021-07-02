@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 
-// reducers
+
 import user from "./user";
 import feed from "./feed";
 import article from "./article";
+import category from "./category";
+import categories from "./categories";
 import profile from "./profile";
 import sidebar from "./sidebar";
 import recommendation from "./recommendation";
@@ -17,6 +19,8 @@ export default combineReducers({
   user,
   feed,
   article,
+  categories,
+  category,
   profile,
   sidebar,
   recommendation,

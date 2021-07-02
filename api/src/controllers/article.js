@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const {
   User,
+  Category,
   Article,
   ArticleLike,
   Comment,
@@ -13,6 +14,7 @@ exports.newArticle = asyncHandler(async (req, res, next) => {
   const article = await Article.create({
     ...req.body,
     userId: req.user.id,
+   /* categoryId: req.category.id,*/
   });
 
   res.status(200).json({ success: true, data: article });
@@ -24,6 +26,10 @@ exports.getArticle = asyncHandler(async (req, res, next) => {
       {
         model: User,
         attributes: ["id", "username", "avatar"],
+      },
+      {
+        model: Category,
+        attributes: ["id", "title", "thumbnail"],
       },
     ],
   });
@@ -273,6 +279,7 @@ exports.searchArticle = asyncHandler(async (req, res, next) => {
 
   const articles = await Article.findAll({
     include: { model: User, attributes: ["id", "avatar", "username"] },
+    include: { model: Category, attributes: ["id", "title", "thumbnail"] },
     where: {
       [Op.or]: {
         title: {
